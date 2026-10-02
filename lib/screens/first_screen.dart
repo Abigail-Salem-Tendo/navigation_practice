@@ -1,21 +1,7 @@
 import 'package:flutter/material.dart';
+import '../models/product.dart';
+import '../widgets/rating_box.dart';
 import 'second_screen.dart';
-
-class Product {
-  final String name;
-  final String description;
-  final int price;
-
-  const Product(this.name, this.description, this.price);
-}
-
-const products = [
-  Product('Pixel', 'Pixel is the most featureful phone ever', 800),
-  Product('Laptop', 'Laptop is most productive development tool', 2000),
-  Product('Tablet', 'Tablet is the most useful device ever for meeting', 1500),
-  Product('Pendrive', 'iPhone is the stylist phone ever', 100),
-  Product('Floppy Drive', 'iPhone is the stylist phone ever', 20),
-];
 
 class ProductListScreen extends StatelessWidget {
   const ProductListScreen({super.key});
@@ -25,12 +11,11 @@ class ProductListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Product Navigation')),
       body: ListView.builder(
+        padding: const EdgeInsets.all(2),
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
-          return ListTile(
-            title: Text(product.name),
-            subtitle: Text('Price: ${product.price}'),
+          return GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
@@ -39,8 +24,67 @@ class ProductListScreen extends StatelessWidget {
                 ),
               );
             },
+            child: ProductBox(product: product),
           );
         },
+      ),
+    );
+  }
+}
+
+class ProductBox extends StatelessWidget {
+  final Product product;
+
+  const ProductBox({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(2),
+      height: 160,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: 140,
+              color: product.color,
+              alignment: Alignment.center,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    product.label,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      product.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(product.description, textAlign: TextAlign.center),
+                    Text('Price: ${product.price}'),
+                    RatingBox(rating: product.rating),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

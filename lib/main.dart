@@ -11,7 +11,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Product Navigation',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF2196F3),
+          foregroundColor: Colors.white,
+        ),
+      ),
       home: const ProductListScreen(),
     );
   }
